@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEC School Event Hub</title>
+
+  <style>
+    table, th, td{
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 8px;      
+    }
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6fb;
+      color: #172033;
+    }
+
+    header {
+      background: #3157d5;
+      color: white;
+      padding: 16px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h2,
+    header p {
+      margin: 0;
+    }
+
+    header p {
+      margin-top: 4px;
+      font-size: 12px;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: #3157d5;
+      color: white;
+    }
+
+    .btn-light {
+      background: white;
+      color: #3157d5;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #b42318;
+    }
+
+    .hero {
+      width: 86%;
+      margin: 28px auto;
+      padding: 38px;
+      border-radius: 22px;
+      color: white;
+      background: linear-gradient(135deg, #2446ac, #6d45e8);
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 25px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      margin: 8px 0;
+      font-size: 42px;
+    }
+
+    .hero p {
+      line-height: 1.6;
+    }
+
+    .next-event {
+      background: rgba(255, 255, 255, 0.14);
+      padding: 22px;
+      border-radius: 15px;
+    }
+
+    .container {
+      width: 86%;
+      margin: auto;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 35px;
+    }
+
+    .stat {
+      background: white;
+      padding: 20px;
+      border-radius: 13px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .stat span {
+      color: #667085;
+      font-size: 13px;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 28px;
+      color: #3157d5;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .section-header h2 {
+      margin: 0 0 4px;
+    }
+
+    .section-header p {
+      margin: 0;
+      color: #667085;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d0d5dd;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .filters input,
+    .filters select {
+      width: auto;
+    }
+
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .event-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    }
+
+    .event-banner {
+      padding: 18px;
+      color: white;
+      background: linear-gradient(135deg, #3157d5, #7655e8);
+    }
+
+    .event-banner span {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .event-body {
+      padding: 18px;
+    }
+
+    .event-body h3 {
+      margin: 0 0 10px;
+    }
+
+    .event-info,
+    .event-description {
+      color: #667085;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .status {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .upcoming {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .finished {
+      background: #e5e7eb;
+      color: #475467;
+    }
+
+    .delete-btn {
+      margin-top: 10px;
+    }
+
+    .admin-panel {
+      display: none;
+      margin: 45px 0;
+    }
+
+    .admin-panel.active {
+      display: block;
+    }
+
+    .admin-box {
+      background: white;
+      padding: 24px;
+      border-radius: 15px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .admin-grid label {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .admin-grid input,
+    .admin-grid select,
+    .admin-grid textarea {
+      margin-top: 6px;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .admin-actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-card {
+      width: 400px;
+      max-width: 100%;
+      background: white;
+      padding: 22px;
+      border-radius: 15px;
+    }
+
+    .modal-card h2 {
+      margin-top: 0;
+    }
+
+    .modal-card input {
+      margin: 8px 0 12px;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      padding: 30px;
+      text-align: center;
+      background: white;
+      border-radius: 12px;
+      color: #667085;
+    }
+
+    footer {
+      margin-top: 50px;
+      padding: 24px;
+      text-align: center;
+      background: #172033;
+      color: #98a2b3;
+    }
+
+    @media (max-width: 850px) {
+      .hero,
+      .event-grid,
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .filters input,
+      .filters select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <table>
+    <thead>
+    
+        <tr> 
+           <th>Event Name</th>
+          <th>Category</th>
+          <th>Date</th>
+        </tr>
+         
+        <tr>
+          <th>Time</th>
+          <th>Venue</th>
+          <th>Description</th>
+      </tr>
+      
+    </thead>
+      <tr> 
+        <td>Acquaintance Party</td>
+        <td>Social</td>
+        <td>August 7, 2026</td>
+      </tr>
+      <tr>
+        <td>Acquaintance Party</td>
+        <td>Social</td>
+        <td>August 7, 2026</td>
+      </tr>
+      <tr>
+        <td>CEC Night</td>
+        <td>Cultural</td>
+        <td>August 27, 2026</td>
+  </table>
+
+  <header>
+
+    
+    <div>
+      <h2>CEC School Event Hub</h2>
+      <p>Browse school events in one place</p>
+    </div>
+
+    <button class="btn-light" id="adminButton">Administrator</button>
+  </header>
+
+  <section class="hero">
+    <div>
+      <small>CEC EVENT SYSTEM</small>
+      <h1>Discover Upcoming School Events</h1>
+      <p>
+        Browse CEC activities, programs, celebrations, and other school events.
+      </p>
+      <button class="btn-light" id="browseButton">Browse Events</button>
+    </div>
+
+    <div class="next-event">
+      <small>NEXT CEC EVENT</small>
+      <h2 id="nextEventName">Loading...</h2>
+      <p id="nextEventDate"></p>
+    </div>
+  </section>
+
+  <main class="container">
+
+    <section class="stats">
+      <div class="stat">
+        <span>Total Events</span>
+        <strong id="totalEvents">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>Upcoming Events</span>
+        <strong id="upcomingEvents">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>Categories</span>
+        <strong id="categoryCount">0</strong>
+      </div>
+    </section>
+
+    <section id="eventsSection">
+      <div class="section-header">
+        <div>
+          <h2>CEC Events</h2>
+          <p>Search or filter the events below.</p>
+        </div>
+
+        <div class="filters">
+          <input
+            type="text"
+            id="eventSearch"
+            placeholder="Search events..."
+          >
+
+          <select id="eventCategory">
+            <option value="All">All Categories</option>
+            <option value="Academic">Academic</option>
+            <option value="Sports">Sports</option>
+            <option value="Cultural">Cultural</option>
+            <option value="Maritime">Maritime</option>
+            <option value="Social">Social</option>
+            <option value="Organization">Organization</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="event-grid" id="eventGrid"></div>
+    </section>
+
+    <!-- ADMINISTRATOR: ADD EVENTS ONLY -->
+    <section class="admin-panel" id="adminPanel">
+      <div class="admin-box">
+        <div class="section-header">
+          <div>
+            <h2>Add New Event</h2>
+            <p>The administrator can add and delete events.</p>
+          </div>
+
+          <button class="btn-danger" id="logoutButton">Log Out</button>
+        </div>
+
+        <form id="eventForm">
+          <div class="admin-grid">
+            <label>
+              Event Name
+              <input type="text" id="newEventName" required>
+            </label>
+
+            <label>
+              Category
+              <select id="newEventCategory" required>
+                <option value="">Select Category</option>
+                <option value="DEAD">Academic</option>
+                <option value="Sports">Sports</option>
+                <option value="Cultural">Cultural</option>
+                <option value="Maritime">Maritime</option>
+                <option value="Social">Social</option>
+                <option value="Organization">Organization</option>
+              </select>
+            </label>
+
+            <label>
+              Date
+              <input type="date" id="newEventDate" required>
+            </label>
+
+            <label>
+              Time
+              <input type="time" id="newEventTime" required>
+            </label>
+
+            <label>
+              email
+              <input type="email" id="newEventEmail" required>
+            </label>
+
+            <label class="full-width">
+              Venue
+              <input type="text" id="newEventVenue" required>
+            </label>
+
+            <label class="full-width">
+              Description
+              <textarea id="newEventDescription" rows="3" required></textarea>
+            </label>
+          </div>
+
+          <div class="admin-actions">
+            <button type="submit" class="btn-primary">Add Event</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SIMPLE ADMIN LOGIN -->
+  <div class="modal" id="adminLoginModal">
+    <div class="modal-card">
+      <h2>Administrator Login</h2>
+      <label>Administrator PIN</label>
+      <input type="password" id="adminPin" placeholder="Enter PIN">
+
+      <button class="btn-primary" id="loginButton">Login</button>
+      <button id="cancelLoginButton">Cancel</button>
+    </div>
+  </div>
+
+  <footer>
+    CEC School Event Hub<br><br>
+    School Event Browsing System
+  </footer>
+
+  <script>
+    // ================================================
+    // 1. DEFAULT EVENTS
+    // ================================================
+    const defaultEvents = [
+      { id: 1, name: "Acquaintance Party", category: "Social", date: "2026-08-07", time: "08:00", venue: "CEC Campus", description: "Welcome and social activity for CEC students." },
+      { id: 2, name: "CEC Night", category: "Cultural", date: "2026-08-27", time: "18:00", venue: "Panglao, Bohol", description: "CEC student performances during the Panglao celebration." },
+      { id: 3, name: "Maritime Week", category: "Maritime", date: "2026-09-15", time: "08:00", venue: "CEC Campus", description: "Maritime activities, competitions and leadership programs." },
+      { id: 4, name: "CEC Palaro / Intramurals", category: "Sports", date: "2026-09-25", time: "07:30", venue: "CEC School Grounds", description: "Sports and inter-department competitions." },
+      { id: 5, name: "ICT / Computer Studies Days", category: "Academic", date: "2026-10-10", time: "08:00", venue: "Computer Studies Department", description: "Programming, web development and IT activities." },
+      { id: 6, name: "Christmas Celebration", category: "Social", date: "2026-12-18", time: "13:00", venue: "CEC Campus", description: "Department and class Christmas celebrations." },
+      { id: 7, name: "Hospitality Management Days", category: "Academic", date: "2027-03-15", time: "08:00", venue: "Hospitality Management Department", description: "Hospitality activities and competitions." },
+      { id: 8, name: "Pin & Ring / Ring Hop Ceremony", category: "Maritime", date: "2027-05-15", time: "17:00", venue: "CEC Campus", description: "Traditional maritime pre-graduation ceremony." },
+      { id: 9, name: "Graduation / Commencement Exercises", category: "Academic", date: "2027-05-30", time: "08:00", venue: "CEC Graduation Venue", description: "Official graduation ceremony." },
+      { id: 10, name: "Student Orientation / General Assembly", category: "Organization", date: "2027-06-15", time: "08:00", venue: "CEC Auditorium", description: "Orientation for new and returning students." }
+    ];
+
+    const ADMIN_PIN = "CEC2026";
+
+    // ================================================
+    // 2. LOAD SAVED EVENTS
+    // ================================================
+    let addedEvents = [];
+
+    try {
+      addedEvents = JSON.parse(localStorage.getItem("cecAddedEvents")) || [];
+    } catch (error) {
+      addedEvents = [];
+    }
+
+    let deletedIds = JSON.parse(localStorage.getItem("cecDeletedEvents")) || [];
+    let adminLoggedIn = false;
+
+    function rebuildEvents() {
+      events = defaultEvents.filter(function (event) {
+        return !deletedIds.includes(event.id);
+      }).concat(addedEvents);
+    }
+
+    let events = [];
+    rebuildEvents();
+
+    // ================================================
+    // 3. SHOW EVENTS
+    // ================================================
+    function displayEvents() {
+      const search = document.getElementById("eventSearch").value.toLowerCase();
+      const category = document.getElementById("eventCategory").value;
+      const grid = document.getElementById("eventGrid");
+
+      const filtered = events.filter(function (event) {
+        const matchesSearch =
+          event.name.toLowerCase().includes(search) ||
+          event.description.toLowerCase().includes(search);
+
+        const matchesCategory =
+          category === "All" || event.category === category;
+
+        return matchesSearch && matchesCategory;
+      });
+
+      filtered.sort(function (a, b) {
+        return getEventDate(a) - getEventDate(b);
+      });
+
+      grid.innerHTML = "";
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty">No matching events found.</div>';
+        return;
+      }
+
+      filtered.forEach(function (event) {
+        const finished = getEventDate(event) < new Date();
+
+        grid.innerHTML += `
+          <article class="event-card">
+            <div class="event-banner">
+              <span>${event.category}</span>
+            </div>
+            <div class="event-body">
+              <span class="status ${finished ? "finished" : "upcoming"}">
+                ${finished ? "Finished" : "Upcoming"}
+              </span>
+              <h3>${event.name}</h3>
+              <div class="event-info">
+                ${formatDate(event.date)}<br>
+                ${formatTime(event.time)}<br>
+                ${event.venue}
+              </div>
+              <p class="event-description">${event.description}</p>
+              ${adminLoggedIn ? `<button class="btn-danger delete-btn" onclick="deleteEvent(${event.id})">Delete Event</button>` : ""}
+            </div>
+          </article>`;
+      });
+    }
+
+    // ================================================
+    // 4. ADMINISTRATOR LOGIN
+    // ================================================
+    function showAdminLogin() {
+      document.getElementById("adminLoginModal").style.display = "flex";
+      document.getElementById("adminPin").focus();
+    }
+
+    function hideAdminLogin() {
+      document.getElementById("adminLoginModal").style.display = "none";
+      document.getElementById("adminPin").value = "";
+    }
+
+    function loginAdmin() {
+      const pin = document.getElementById("adminPin").value;
+
+      if (pin !== ADMIN_PIN) {
+        alert("Incorrect administrator PIN.");
+        return;
+      }
+
+      hideAdminLogin();
+      adminLoggedIn = true;
+      document.getElementById("adminPanel").classList.add("active");
+      displayEvents();
+      document.getElementById("adminPanel").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function logoutAdmin() {
+      adminLoggedIn = false;
+      document.getElementById("adminPanel").classList.remove("active");
+      displayEvents();
+    }
+
+    // ================================================
+    // 5. ADD EVENT
+    // ================================================
+    function addEvent(event) {
+      event.preventDefault();
+
+      const newEvent = {
+        id: Date.now(),
+        name: document.getElementById("newEventName").value,
+        category: document.getElementById("newEventCategory").value,
+        date: document.getElementById("newEventDate").value,
+        time: document.getElementById("newEventTime").value,
+        venue: document.getElementById("newEventVenue").value,
+        description: document.getElementById("newEventDescription").value
+      };
+
+      addedEvents.push(newEvent);
+      localStorage.setItem("cecAddedEvents", JSON.stringify(addedEvents));
+
+      rebuildEvents();
+      document.getElementById("eventForm").reset();
+      updatePage();
+
+      alert("Event added successfully!");
+    }
+
+    // ================================================
+    // 6. DELETE EVENT
+    // ================================================
+    function deleteEvent(id) {
+      if (!adminLoggedIn || !confirm("Delete this event?")) return;
+
+      if (addedEvents.some(function (event) { return event.id === id; })) {
+        addedEvents = addedEvents.filter(function (event) { return event.id !== id; });
+        localStorage.setItem("cecAddedEvents", JSON.stringify(addedEvents));
+      } else {
+        if (!deletedIds.includes(id)) deletedIds.push(id);
+        localStorage.setItem("cecDeletedEvents", JSON.stringify(deletedIds));
+      }
+
+      rebuildEvents();
+      updatePage();
+    }
+
+    // ================================================
+    // 7. SMALL HELPER FUNCTIONS
+    // ================================================
+    function getEventDate(event) {
+      return new Date(event.date + "T" + event.time);
+    }
+
+    function formatDate(date) {
+      return new Date(date + "T00:00:00").toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+      });
+    }
+
+    function formatTime(time) {
+      return new Date("2000-01-01T" + time).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit"
+      });
+    }
+
+    function updatePage() {
+      displayEvents();
+
+      const now = new Date();
+      const upcoming = events.filter(function (event) {
+        return getEventDate(event) >= now;
+      });
+
+      document.getElementById("totalEvents").textContent = events.length;
+      document.getElementById("upcomingEvents").textContent = upcoming.length;
+      document.getElementById("categoryCount").textContent = new Set(events.map(function (event) {
+        return event.category;
+      })).size;
+
+      upcoming.sort(function (a, b) {
+        return getEventDate(a) - getEventDate(b);
+      });
+
+      if (upcoming.length > 0) {
+        document.getElementById("nextEventName").textContent = upcoming[0].name;
+        document.getElementById("nextEventDate").textContent =
+          formatDate(upcoming[0].date) + " at " + formatTime(upcoming[0].time);
+      } else {
+        document.getElementById("nextEventName").textContent = "No upcoming events";
+        document.getElementById("nextEventDate").textContent = "";
+      }
+    }
+
+    // ================================================
+    // 8. BUTTON CONNECTIONS
+    // No inline onclick is used, so the undefined-function error is avoided.
+    // ================================================
+    document.getElementById("adminButton").addEventListener("click", showAdminLogin);
+    document.getElementById("browseButton").addEventListener("click", function () {
+      document.getElementById("eventsSection").scrollIntoView({ behavior: "smooth" });
+    });
+    document.getElementById("logoutButton").addEventListener("click", logoutAdmin);
+    document.getElementById("loginButton").addEventListener("click", loginAdmin);
+    document.getElementById("cancelLoginButton").addEventListener("click", hideAdminLogin);
+    document.getElementById("eventSearch").addEventListener("input", displayEvents);
+    document.getElementById("eventCategory").addEventListener("change", displayEvents);
+    document.getElementById("eventForm").addEventListener("submit", addEvent);
+
+    document.getElementById("adminPin").addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        loginAdmin();
+      }
+    });
+
+    updatePage();
+  </script>
+
+</body>
+</html>

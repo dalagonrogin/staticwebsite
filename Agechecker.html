@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Age Checker</title>
+    <link rel="stylesheet" href="agechecker.css" />
+  </head>
+
+  <body class="zack">
+    <div class="login">
+      <h2>Age Checker</h2>
+      <p>Enter your age to check your category.</p>
+
+      <form onsubmit="checkAge(); return false;">
+        <label for="age">Enter Your Age:</label>
+
+        <input
+          type="number"
+          id="age"
+          placeholder="Enter your age"
+          min="0"
+          step="1"
+          required
+        />
+
+        <button class="burt" type="submit">Check Age</button>
+      </form>
+
+      <h3 id="result" aria-live="polite"></h3>
+    </div>
+
+    <script>
+      function checkAge() {
+        let ageInput = document.getElementById("age").value;
+        let age = Number(ageInput);
+        let result = document.getElementById("result");
+
+        if (ageInput === "" || !Number.isInteger(age) || age <= 0) {
+          result.innerHTML = "Invalid Age!";
+        } else if (age < 18) {
+          result.innerHTML = "You are a Minor!";
+        } else if (age <= 60) {
+          result.innerHTML = "You are an Adult!";
+        } else {
+          result.innerHTML = "You are a Senior!";
+        }
+      }
+    </script>
+  </body>
+</html>
