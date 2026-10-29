@@ -1,0 +1,21 @@
+
+.login h2 {
+    text-align: center;
+    color: #1e293b;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.login p {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+#result {
+    text-align: center;
+    margin-top: 25px;
+    color: #2563eb;
+    font-size: 20px;
+    font-weight: bold;
+}

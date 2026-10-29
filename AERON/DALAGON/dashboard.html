@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Favorite Movies - Home</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img src="CAR.jpg" alt="Logo">
+        </div>
+
+        <div class="links">
+            <a href="index.html" class="active">HOME</a>
+            <a href="about.html">ABOUT</a>
+            <a href="highlights.html">HIGHLIGHTS</a>
+            <a href="services.html">SERVICES</a>
+        </div>
+
+        <div class="search">
+            <input type="text" placeholder="Search...">
+            <button onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <h1>A Person Worth Remembering</h1>
+
+        <p>
+            He's very kind, cheerful, and always ready to help others.
+        </p>
+
+        <a href="about.html" class="button">
+            Explore More
+        </a>
+
+    </section>
+    <script>
+    function logout() {
+
+
+        if(confirm("Do you want to exit?")) {
+            alert("You have been logged out.");
+            window.location.href = "login.html";
+        }else {
+            alert("logout cancelled.");
+        }
+    }
+    </script>
+
+
+</body>
+</html>
